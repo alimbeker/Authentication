@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "160436511119",
+    "project_id": "authenticationfirebase-d983a",
+    "storage_bucket": "authenticationfirebase-d983a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:160436511119:android:7eabbd4779c17a5b396bfa",
+        "android_client_info": {
+          "package_name": "relog.android.authentication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmDM-NLQF9rxW1KJBVtc4zHfbgugF57H0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
