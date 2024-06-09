@@ -1,4 +1,4 @@
-package relog.android.authentication.data
+package relog.android.authentication.data.model
 
 import com.google.firebase.firestore.IgnoreExtraProperties
 
