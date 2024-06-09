@@ -5,7 +5,7 @@
     android:id="@+id/authRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.AuthActivity">
+    tools:context=".ui.theme.auth.AuthActivity">
 
     <fragment
         android:id="@+id/authNavHostFragment"
@@ -13,6 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/auth_nav_graph" />
+        app:navGraph="@navigation/nav_graph" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

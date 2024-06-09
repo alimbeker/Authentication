@@ -24,6 +24,8 @@ dagger = "2.51"
 navigationFragmentKtxVersion = "2.7.7"
 googleServices = "4.4.2"
 safeArgs = "2.7.7"
+googleServicesVersion = "4.4.2"
+firebaseAuth = "23.0.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
@@ -57,6 +59,8 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtxVersion" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationFragmentKtxVersion" }
+google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServicesVersion" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
