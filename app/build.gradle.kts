@@ -3,7 +3,9 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kapt)
     alias(libs.plugins.dagger.hilt.android)
-
+    alias(libs.plugins.kotlinParcelize)
+    alias(libs.plugins.googleServices)
+    alias(libs.plugins.safeArgs)
 }
 
 android {
@@ -84,4 +86,27 @@ dependencies {
     //Navigation Component
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    // Architectural Components
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+
+    // Lifecycle
+    implementation (libs.androidx.lifecycle.livedata.ktx)
+    implementation (libs.androidx.lifecycle.runtime.ktx)
+
+    // Coroutines
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+
+    // Coroutine Lifecycle Scopes
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    implementation (libs.androidx.lifecycle.runtime.ktx)
+
+    // Activity KTX for viewModels()
+    implementation (libs.androidx.activity.ktx)
+
+    // Firebase Coroutines
+    implementation (libs.kotlinx.coroutines.play.services)
+
+
 }
