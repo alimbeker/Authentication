@@ -7,15 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthResult
-import com.sahanmondal.mvvm_firebase_authentication.R
-import com.sahanmondal.mvvm_firebase_authentication.others.Event
-import com.sahanmondal.mvvm_firebase_authentication.others.Resource
-import com.sahanmondal.mvvm_firebase_authentication.repositories.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import relog.android.authentication.R
+import relog.android.authentication.data.repository.AuthRepository
 import relog.android.authentication.others.Event
 import relog.android.authentication.others.Resource
 import javax.inject.Inject
