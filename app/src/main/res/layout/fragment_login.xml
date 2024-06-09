@@ -70,7 +70,7 @@
         android:background="?android:attr/selectableItemBackground"
         android:text="@string/create_a_new_account"
         android:textColor="#007AFF"
-        app:cornerRadius="4dp" />
+        />
 
     <ProgressBar
         android:id="@+id/loginProgressBar"
