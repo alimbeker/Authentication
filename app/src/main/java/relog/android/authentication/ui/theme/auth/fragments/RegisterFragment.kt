@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import relog.android.authentication.databinding.FragmentRegisterBinding
 import relog.android.authentication.others.EventObserver
+import relog.android.authentication.others.Resource
 import relog.android.authentication.others.snackBar
 import relog.android.authentication.ui.theme.auth.AuthViewModel
 import relog.android.authentication.ui.theme.main.MainActivity
@@ -54,30 +56,46 @@ class RegisterFragment : Fragment() {
                 )
             }
         }
-
     }
 
     private fun subscribeToObservers() {
-        viewModel.registerStatus.observe(viewLifecycleOwner, EventObserver(
-            onError = {
-                binding.registerProgressBar.isVisible = false
-                binding.btnRegister.isEnabled = true
-                snackBar(it)
-            },
-            onLoading = {
-                binding.registerProgressBar.isVisible = true
-                binding.btnRegister.isEnabled = false
+        lifecycleScope.launchWhenStarted {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is AuthViewModel.UiEvent.ShowSnackbar -> {
+                        snackBar(event.message)
+                    }
+                    is AuthViewModel.UiEvent.NavigateToMain -> {
+                        Intent(requireContext(), MainActivity::class.java).also {
+                            startActivity(it)
+                            requireActivity().finish()
+                        }
+                    }
+                }
             }
-        ) {
-            binding.registerProgressBar.isVisible = false
-            binding.btnRegister.isEnabled = true
-            Intent(requireContext(), MainActivity::class.java).also {
-                startActivity(it)
-                requireActivity().finish()
-            }
-        })
-    }
+        }
 
+        lifecycleScope.launchWhenStarted {
+            viewModel.registerStatus.collect { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        binding.registerProgressBar.isVisible = true
+                        binding.btnRegister.isEnabled = false
+                    }
+                    is Resource.Success -> {
+                        binding.registerProgressBar.isVisible = false
+                        binding.btnRegister.isEnabled = true
+                    }
+                    is Resource.Error -> {
+                        binding.registerProgressBar.isVisible = false
+                        binding.btnRegister.isEnabled = true
+                        snackBar(resource.message ?: "Unknown error")
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

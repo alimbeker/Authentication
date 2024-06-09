@@ -10,10 +10,13 @@ import com.google.firebase.auth.AuthResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import relog.android.authentication.R
 import relog.android.authentication.data.repository.AuthRepository
-import relog.android.authentication.others.Event
 import relog.android.authentication.others.Resource
 import javax.inject.Inject
 
@@ -24,44 +27,68 @@ class AuthViewModel @Inject constructor(
     private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
-    private val _registerStatus = MutableLiveData<Event<Resource<AuthResult>>>()
-    val registerStatus: LiveData<Event<Resource<AuthResult>>> = _registerStatus
+    private val _registerStatus = MutableStateFlow<Resource<AuthResult>?>(null)
+    val registerStatus: StateFlow<Resource<AuthResult>?> = _registerStatus
 
-    private val _loginStatus = MutableLiveData<Event<Resource<AuthResult>>>()
-    val loginStatus: LiveData<Event<Resource<AuthResult>>> = _loginStatus
+    private val _loginStatus = MutableStateFlow<Resource<AuthResult>?>(null)
+    val loginStatus: StateFlow<Resource<AuthResult>?> = _loginStatus
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     fun login(email: String, password: String) {
         if (email.isEmpty() || password.isEmpty()) {
             val error = applicationContext.getString(R.string.error_input_empty)
-            _loginStatus.postValue(Event(Resource.Error(error)))
+            viewModelScope.launch {
+                _eventFlow.emit(UiEvent.ShowSnackbar(error))
+            }
         } else {
-            _loginStatus.postValue(Event(Resource.Loading()))
+            _loginStatus.value = Resource.Loading()
             viewModelScope.launch(dispatcher) {
                 val result = repository.login(email, password)
-                _loginStatus.postValue(Event(result))
+                _loginStatus.value = result
+                if (result is Resource.Error) {
+                    _eventFlow.emit(UiEvent.ShowSnackbar(result.message ?: "Unknown error"))
+                }
             }
         }
     }
 
     fun register(email: String, name: String, password: String) {
-        val error =
-            if (email.isEmpty() || name.isEmpty() || password.isEmpty()) {
+        val error = when {
+            email.isEmpty() || name.isEmpty() || password.isEmpty() -> {
                 applicationContext.getString(R.string.error_input_empty)
-            } else if (password.length < 8) {
+            }
+            password.length < 8 -> {
                 applicationContext.getString(R.string.error_password_short)
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            }
+            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
                 applicationContext.getString(R.string.error_invalid_email)
-            } else null
+            }
+            else -> null
+        }
 
         error?.let {
-            _registerStatus.postValue(Event(Resource.Error(it)))
+            viewModelScope.launch {
+                _eventFlow.emit(UiEvent.ShowSnackbar(it))
+            }
             return
         }
 
-        _registerStatus.postValue(Event(Resource.Loading()))
+
         viewModelScope.launch(dispatcher) {
             val result = repository.register(email, name, password)
-            _registerStatus.postValue(Event(result))
+            _registerStatus.value = result
+            if (result is Resource.Success) {
+                _eventFlow.emit(UiEvent.NavigateToMain)
+            } else if (result is Resource.Error) {
+                _eventFlow.emit(UiEvent.ShowSnackbar(result.message ?: "Unknown error"))
+            }
         }
+    }
+
+    sealed class UiEvent {
+        data class ShowSnackbar(val message: String) : UiEvent()
+        data object NavigateToMain : UiEvent()
     }
 }

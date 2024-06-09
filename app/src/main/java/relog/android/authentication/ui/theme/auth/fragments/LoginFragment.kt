@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import relog.android.authentication.R
 import relog.android.authentication.databinding.FragmentLoginBinding
 import relog.android.authentication.others.EventObserver
 import relog.android.authentication.others.snackBar
@@ -45,41 +47,38 @@ class LoginFragment : Fragment() {
                     etPassword.text.toString().trim()
                 )
             }
-        }
 
-        binding.apply {
             btnGoToRegister.setOnClickListener {
-                if (findNavController().previousBackStackEntry != null) {
-                    findNavController().popBackStack()
+                val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+                if (findNavController().currentDestination?.id == R.id.loginFragment) {
+                    findNavController().navigate(action)
                 } else {
-                    findNavController().navigate(
-                        LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
-                    )
+                    findNavController().popBackStack(R.id.loginFragment, false)
                 }
             }
         }
-
     }
 
     private fun subscribeToObservers() {
-        viewModel.loginStatus.observe(viewLifecycleOwner, EventObserver(
-            onError = {
-                binding.loginProgressBar.isVisible = false
-                binding.btnLogin.isEnabled = true
-                snackBar(it)
-            },
-            onLoading = {
-                binding.loginProgressBar.isVisible = true
-                binding.btnLogin.isEnabled = false
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is AuthViewModel.UiEvent.ShowSnackbar -> {
+                        binding.loginProgressBar.isVisible = false
+                        binding.btnLogin.isEnabled = true
+                        snackBar(event.message)
+                    }
+                    is AuthViewModel.UiEvent.NavigateToMain -> {
+                        binding.loginProgressBar.isVisible = false
+                        binding.btnLogin.isEnabled = true
+                        Intent(requireContext(), MainActivity::class.java).also {
+                            startActivity(it)
+                            requireActivity().finish()
+                        }
+                    }
+                }
             }
-        ) {
-            binding.loginProgressBar.isVisible = false
-            binding.btnLogin.isEnabled = true
-            Intent(requireContext(), MainActivity::class.java).also {
-                startActivity(it)
-                requireActivity().finish()
-            }
-        })
+        }
     }
 
     override fun onDestroyView() {
