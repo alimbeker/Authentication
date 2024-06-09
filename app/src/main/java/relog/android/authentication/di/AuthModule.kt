@@ -1,5 +1,6 @@
 package relog.android.authentication.di
 
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,5 +15,5 @@ object AuthModule {
 
     @Provides
     @ViewModelScoped
-    fun provideAuthRepository() = AuthRepositoryImpl() as AuthRepository
+    fun provideAuthRepository():AuthRepository = AuthRepositoryImpl()
 }
