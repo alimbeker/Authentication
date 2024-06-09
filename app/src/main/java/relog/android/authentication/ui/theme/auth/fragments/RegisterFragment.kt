@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import relog.android.authentication.databinding.FragmentRegisterBinding
-import relog.android.authentication.others.EventObserver
 import relog.android.authentication.others.Resource
 import relog.android.authentication.others.snackBar
 import relog.android.authentication.ui.theme.auth.AuthViewModel

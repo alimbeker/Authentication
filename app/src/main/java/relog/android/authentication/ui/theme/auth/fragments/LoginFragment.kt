@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import relog.android.authentication.R
 import relog.android.authentication.databinding.FragmentLoginBinding
-import relog.android.authentication.others.EventObserver
 import relog.android.authentication.others.snackBar
 import relog.android.authentication.ui.theme.auth.AuthViewModel
 import relog.android.authentication.ui.theme.main.MainActivity
