@@ -1,4 +1,4 @@
-package relog.android.authentication
+package relog.android.authentication.ui.theme.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

@@ -1,7 +1,6 @@
-package relog.android.authentication.data.model
+package relog.android.authentication.data
 
 import com.google.firebase.firestore.IgnoreExtraProperties
-
 
 @IgnoreExtraProperties
 data class User(
