@@ -1,5 +1,6 @@
 package relog.android.authentication.ui.theme.auth
 
+import RegisterScreen
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
