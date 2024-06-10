@@ -1,4 +1,4 @@
-package relog.android.authentication.ui.theme.auth.fragments
+package relog.android.authentication.ui.theme.auth.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -32,7 +32,7 @@ fun RegisterScreen(navController: NavController, viewModel: AuthViewModel = hilt
                     }
                 }
                 is AuthViewModel.UiEvent.NavigateToMain -> {
-                    navController.navigate("main") {
+                    navController.navigate("login") {
                         popUpTo("register") { inclusive = true }
                     }
                 }

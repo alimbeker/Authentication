@@ -1,5 +1,6 @@
-package relog.android.authentication.ui.theme.auth.fragments
+package relog.android.authentication.ui.theme.auth.screens
 
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import relog.android.authentication.others.Resource
 import com.google.firebase.auth.AuthResult
 import relog.android.authentication.ui.theme.auth.AuthViewModel
+import relog.android.authentication.ui.theme.main.MainActivity
 
 
 @Composable
@@ -34,9 +36,7 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
                     }
                 }
                 is AuthViewModel.UiEvent.NavigateToMain -> {
-                    navController.navigate("main") {
-                        popUpTo("login") { inclusive = true }
-                    }
+                    context.startActivity(Intent(context, MainActivity::class.java))
                 }
             }
         }

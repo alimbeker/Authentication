@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import relog.android.authentication.ui.theme.MainTheme
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import relog.android.authentication.ui.theme.auth.AuthNavHost
+import relog.android.authentication.ui.theme.navigation.AuthNavHost
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

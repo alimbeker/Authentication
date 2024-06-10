@@ -4,17 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
-import relog.android.authentication.ui.theme.auth.fragments.LoginScreen
-import relog.android.authentication.ui.theme.auth.fragments.RegisterScreen
 import relog.android.authentication.ui.theme.main.MainActivity
-import relog.android.authentication.ui.theme.main.MainScreen
+import relog.android.authentication.ui.theme.navigation.AuthNavHost
 
 @AndroidEntryPoint
 class AuthActivity : ComponentActivity() {
@@ -39,18 +33,4 @@ class AuthActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun AuthNavHost(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "login") {
-        composable("login") {
-            LoginScreen(navController = navController)
-        }
-        composable("register") {
-            RegisterScreen(navController = navController)
-        }
 
-        composable("main") {
-            MainScreen(navController = navController)
-        }
-    }
-}
