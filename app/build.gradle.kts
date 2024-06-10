@@ -83,6 +83,8 @@ dependencies {
     implementation (libs.hilt.android)
     kapt(libs.hilt.compiler)
     kapt(libs.androidx.hilt.compiler)
+    implementation (libs.androidx.hilt.navigation.compose)
+
 
     //Navigation Component
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -109,5 +111,14 @@ dependencies {
     // Firebase Coroutines
     implementation (libs.kotlinx.coroutines.play.services)
 
+    // Jetpack Compose
+    implementation (libs.ui)
+    implementation (libs.androidx.material)
+    implementation (libs.ui.tooling.preview)
+    implementation (libs.androidx.activity.compose.v150)
+    implementation (libs.androidx.navigation.compose)
 
+    // Material Icons
+    implementation(libs.compose.material.icons)
+    implementation(libs.compose.material.icons.extended)
 }
