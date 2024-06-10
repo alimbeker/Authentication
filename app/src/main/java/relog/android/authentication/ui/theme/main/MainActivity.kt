@@ -1,6 +1,5 @@
 package relog.android.authentication.ui.theme.main
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,14 +17,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
-import relog.android.authentication.ui.theme.auth.AuthActivity
 import androidx.compose.ui.tooling.preview.Preview
 import relog.android.authentication.ui.theme.MainTheme
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import relog.android.authentication.ui.theme.auth.AuthNavHost
+
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            val navController = rememberNavController()
+
+            MainTheme {
+                AuthNavHost(navController = navController)
+            }
+        }
+    }
+}
+
 
 @Composable
-fun MainScreen(onLogoutClick: () -> Unit = {}) {
+fun MainScreen(navController: NavHostController, onLogoutClick: () -> Unit = {}) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -37,7 +53,10 @@ fun MainScreen(onLogoutClick: () -> Unit = {}) {
         Text(text = "Hello World!")
 
         Button(
-            onClick = onLogoutClick,
+            onClick = {
+                onLogoutClick()
+                navController.navigate("login") // Navigate to the login screen after logout
+            },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFBA000D)),
             modifier = Modifier
                 .fillMaxWidth()
@@ -52,27 +71,7 @@ fun MainScreen(onLogoutClick: () -> Unit = {}) {
 @Composable
 fun MainScreenPreview() {
     MainTheme {
-        MainScreen()
-    }
-}
-
-
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            MainTheme {
-                MainScreen(onLogoutClick = {
-                    FirebaseAuth.getInstance().signOut()
-                    Intent(this, AuthActivity::class.java).also {
-                        startActivity(it)
-                    }
-                    finish()
-                })
-            }
-        }
+        MainScreen(navController = rememberNavController())
     }
 }
 

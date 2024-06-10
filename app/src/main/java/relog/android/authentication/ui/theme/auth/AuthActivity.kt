@@ -1,6 +1,5 @@
 package relog.android.authentication.ui.theme.auth
 
-import RegisterScreen
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,7 +12,9 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import relog.android.authentication.ui.theme.auth.fragments.LoginScreen
+import relog.android.authentication.ui.theme.auth.fragments.RegisterScreen
 import relog.android.authentication.ui.theme.main.MainActivity
+import relog.android.authentication.ui.theme.main.MainScreen
 
 @AndroidEntryPoint
 class AuthActivity : ComponentActivity() {
@@ -46,6 +47,10 @@ fun AuthNavHost(navController: NavHostController) {
         }
         composable("register") {
             RegisterScreen(navController = navController)
+        }
+
+        composable("main") {
+            MainScreen(navController = navController)
         }
     }
 }
