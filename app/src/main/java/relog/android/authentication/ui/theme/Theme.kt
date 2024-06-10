@@ -4,12 +4,15 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -68,3 +71,24 @@ fun AuthenticationTheme(
         content = content
     )
 }
+
+
+@Composable
+fun MainTheme(content: @Composable () -> Unit) {
+    val lightColors = lightColorScheme(
+        primary = Color(0xFF6200EE),
+        onPrimary = Color.White,
+        primaryContainer = Color(0xFF3700B3),
+        onPrimaryContainer = Color.White,
+        secondary = Color(0xFF03DAC5),
+        onSecondary = Color.Black
+    )
+
+    MaterialTheme(
+        colorScheme = lightColors,
+        typography = Typography(),
+        shapes = Shapes(),
+        content = content
+    )
+}
+

@@ -1,6 +1,7 @@
 package relog.android.authentication.ui.theme.auth
 
 import android.content.Context
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -74,8 +75,7 @@ class AuthViewModel @Inject constructor(
             }
             return
         }
-
-
+        
         viewModelScope.launch(dispatcher) {
             val result = repository.register(email, name, password)
             _registerStatus.value = result

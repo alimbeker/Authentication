@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import relog.android.authentication.databinding.FragmentRegisterBinding
 import relog.android.authentication.others.Resource
 import relog.android.authentication.others.snackBar
@@ -58,7 +59,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun subscribeToObservers() {
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launch {
             viewModel.eventFlow.collect { event ->
                 when (event) {
                     is AuthViewModel.UiEvent.ShowSnackbar -> {
@@ -74,7 +75,7 @@ class RegisterFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launch {
             viewModel.registerStatus.collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
