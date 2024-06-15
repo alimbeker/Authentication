@@ -1,15 +1,15 @@
 package relog.android.authentication.ui.theme.auth.screens
 
-import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -17,12 +17,10 @@ import kotlinx.coroutines.launch
 import relog.android.authentication.others.Resource
 import com.google.firebase.auth.AuthResult
 import relog.android.authentication.ui.theme.auth.AuthViewModel
-import relog.android.authentication.ui.theme.main.MainActivity
 
 
 @Composable
 fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltViewModel()) {
-    val context = LocalContext.current
     val loginStatus by viewModel.loginStatus.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -36,7 +34,9 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
                     }
                 }
                 is AuthViewModel.UiEvent.NavigateToMain -> {
-                    context.startActivity(Intent(context, MainActivity::class.java))
+                    navController.navigate("main") {
+                        popUpTo("login") { inclusive = true }
+                    }
                 }
             }
         }
@@ -67,6 +67,7 @@ fun LoginContent(
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) } // Track password visibility
     val isLoading = loginStatus is Resource.Loading
 
     Column(
@@ -93,10 +94,13 @@ fun LoginContent(
             onValueChange = { password = it },
             label = { Text("Password") },
             modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation(),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(), // Toggle password visibility
             trailingIcon = {
-                IconButton(onClick = { /* Handle password visibility toggle */ }) {
-                    Icon(imageVector = Icons.Default.Visibility, contentDescription = "Toggle password visibility")
+                IconButton(onClick = { passwordVisible = !passwordVisible }) { // Toggle password visibility on button click
+                    Icon(
+                        imageVector = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                        contentDescription = "Toggle password visibility"
+                    )
                 }
             }
         )
@@ -121,3 +125,4 @@ fun LoginContent(
         }
     }
 }
+

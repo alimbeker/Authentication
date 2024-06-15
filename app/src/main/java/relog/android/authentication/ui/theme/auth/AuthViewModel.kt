@@ -35,22 +35,36 @@ class AuthViewModel @Inject constructor(
     val eventFlow = _eventFlow.asSharedFlow()
 
     fun login(email: String, password: String) {
-        if (email.isEmpty() || password.isEmpty()) {
-            val error = applicationContext.getString(R.string.error_input_empty)
-            viewModelScope.launch {
-                _eventFlow.emit(UiEvent.ShowSnackbar(error))
+        val error = when {
+            email.isEmpty() || password.isEmpty() -> {
+                applicationContext.getString(R.string.error_input_empty)
             }
-        } else {
-            _loginStatus.value = Resource.Loading()
-            viewModelScope.launch(dispatcher) {
-                val result = repository.login(email, password)
-                _loginStatus.value = result
-                if (result is Resource.Error) {
-                    _eventFlow.emit(UiEvent.ShowSnackbar(result.message ?: "Unknown error"))
-                }
+            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                applicationContext.getString(R.string.error_invalid_email)
+            }
+            else -> null
+        }
+
+        error?.let {
+            viewModelScope.launch {
+                _eventFlow.emit(UiEvent.ShowSnackbar(it))
+            }
+            return
+        }
+
+        _loginStatus.value = Resource.Loading()
+
+        viewModelScope.launch(dispatcher) {
+            val result = repository.login(email, password)
+            _loginStatus.value = result
+            if (result is Resource.Error) {
+                _eventFlow.emit(UiEvent.ShowSnackbar(result.message ?: "Unknown error"))
+            } else if (result is Resource.Success) {
+                _eventFlow.emit(UiEvent.NavigateToMain)
             }
         }
     }
+
 
     fun register(email: String, name: String, password: String) {
         val error = when {

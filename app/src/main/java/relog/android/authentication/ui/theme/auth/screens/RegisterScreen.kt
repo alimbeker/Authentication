@@ -4,11 +4,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -18,7 +19,6 @@ import com.google.firebase.auth.AuthResult
 import relog.android.authentication.ui.theme.auth.AuthViewModel
 @Composable
 fun RegisterScreen(navController: NavController, viewModel: AuthViewModel = hiltViewModel()) {
-    val context = LocalContext.current
     val registerStatus by viewModel.registerStatus.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -66,6 +66,7 @@ fun RegisterContent(
     var email by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) } // Track password visibility
     val isLoading = registerStatus is Resource.Loading
 
     Column(
@@ -98,10 +99,13 @@ fun RegisterContent(
             onValueChange = { password = it },
             label = { Text("Password") },
             modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation(),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(), // Toggle password visibility
             trailingIcon = {
-                IconButton(onClick = { /* Handle password visibility toggle */ }) {
-                    Icon(imageVector = Icons.Default.Visibility, contentDescription = "Toggle password visibility")
+                IconButton(onClick = { passwordVisible = !passwordVisible }) { // Toggle password visibility on button click
+                    Icon(
+                        imageVector = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                        contentDescription = "Toggle password visibility"
+                    )
                 }
             }
         )
