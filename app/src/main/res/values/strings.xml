@@ -9,7 +9,7 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_in">Sign In</string>
     <string name="error_input_empty">Fields cannot be empty!</string>
-    <string name="error_password_short">Password must be atleast 8 characters</string>
+    <string name="error_password_short">Password must be at least 8 characters</string>
     <string name="error_invalid_email">Invalid email!</string>
     <string name="success_register">Registration Successful</string>
     <string name="logout">Logout</string>

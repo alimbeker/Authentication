@@ -33,6 +33,7 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
                         scaffoldState.snackbarHostState.showSnackbar(event.message)
                     }
                 }
+
                 is AuthViewModel.UiEvent.NavigateToMain -> {
                     navController.navigate("main") {
                         popUpTo("login") { inclusive = true }
@@ -63,7 +64,7 @@ fun LoginContent(
     viewModel: AuthViewModel,
     navController: NavController,
     loginStatus: Resource<AuthResult>?,
-    contentPadding: PaddingValues
+    contentPadding: PaddingValues,
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -96,7 +97,9 @@ fun LoginContent(
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(), // Toggle password visibility
             trailingIcon = {
-                IconButton(onClick = { passwordVisible = !passwordVisible }) { // Toggle password visibility on button click
+                IconButton(onClick = {
+                    passwordVisible = !passwordVisible
+                }) { // Toggle password visibility on button click
                     Icon(
                         imageVector = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                         contentDescription = "Toggle password visibility"
