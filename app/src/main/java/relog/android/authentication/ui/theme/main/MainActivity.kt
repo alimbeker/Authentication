@@ -22,9 +22,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import relog.android.authentication.ui.theme.MainTheme
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import relog.android.authentication.ui.theme.navigation.AuthNavHost
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity()
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            val navController = rememberNavController()
+
+            MainTheme {
+                AuthNavHost(navController = navController)
+            }
+        }
+    }
+}
 
 
 @Composable

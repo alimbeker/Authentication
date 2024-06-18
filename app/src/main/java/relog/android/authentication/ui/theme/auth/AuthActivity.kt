@@ -15,13 +15,6 @@ class AuthActivity : ComponentActivity() {
 
     private val auth = FirebaseAuth.getInstance()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            val navController = rememberNavController()
-            AuthNavHost(navController)
-        }
-    }
 
     override fun onStart() {
         super.onStart()
